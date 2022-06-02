@@ -32,3 +32,23 @@
   border-radius: 5px;
   
 }
+
+.connectButton {
+  cursor: pointer;
+  margin-top: 16px;
+  padding: 8px;
+  border: 0;
+  border-radius: 5px;
+  
+}
+
+.messageBar input {
+  width: 21rem;
+  padding: 8px;
+  margin-top: 16px;
+  border: 1px solid rgb(15, 15, 15);
+  border-radius: 4px;
+  font-size: .77rem;
+  font-weight: 500;
+  
+}
