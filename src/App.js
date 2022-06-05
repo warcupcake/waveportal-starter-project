@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import './App.css';
 import abi from './utils/WavePortal.json';
+import tokenAbi from './utils/MARI.json';
 
 import MessageBar from "./MessageBar";
 import ConnectWalletButton from "./ConnectWalletButton";
@@ -12,10 +13,15 @@ export default function App() {
   const [currentWaveCount, setWaveCount] = useState("");
   const [allWaves, setAllWaves] = useState([]);
   const [message, setMessage] = useState("");
+  const [balance, setBalance] = useState("");
+  const [remainingTokens, setRemaining] = useState("");
 
-  const contractAddress = "0x52798353c8986719697f1824bD2bB029f9E0bAaA"
+  const contractAddress = "0x8c169E24aC22dCe86492A432Da4f6A16d36C3278"
   const contractABI = abi.abi;
-  
+
+  const tokenContractAddress = "0x7D8f9a89e8fB4bE4e28e692c1725e046D852675F";
+  const tokenContractABI = tokenAbi.abi;
+
   const checkIfWalletIsConnected = async () => {
      try {
 
@@ -40,6 +46,7 @@ export default function App() {
 
       getTotalWaves();
       getAllWaves();
+      getTokenBalance(currentAccount);
 
     } catch (error) {
       console.log(error);
@@ -110,7 +117,35 @@ const getAllWaves = async () => {
     } catch (error) {
       console.log(error);
     }
-  }
+  };
+
+  const getTokenBalance = async(addy) => {
+    try{
+      const {ethereum} = window;
+
+      if(ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const tokenContract = new ethers.Contract(tokenContractAddress, tokenContractABI, signer);
+
+        const accounts = await ethereum.request({ method: "eth_accounts"});
+        console.log(accounts);
+
+        let _balance = await tokenContract.balanceOf(accounts[0]);
+        _balance = await ethers.utils.formatEther(_balance);
+        setBalance(_balance);
+
+        const remainingAddress = "0x1ea99548881A770BfEF0E8F544ccF64872095628"
+        let _remainingBalance = await tokenContract.balanceOf(remainingAddress)
+        _remainingBalance = await ethers.utils.formatEther(_remainingBalance);
+        setRemaining(_remainingBalance);
+      } else {
+        console.log("Ethereum object does not exist!");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const wave = async () => {
     try{
@@ -122,7 +157,7 @@ const getAllWaves = async () => {
         const wavePortalContract = new ethers.Contract(contractAddress, contractABI, signer);
 
         let count = await wavePortalContract.getTotalWaves();
-        
+
         const waveTxn = await wavePortalContract.wave(message, { gasLimit: 300000});
         console.log("Mining...", waveTxn.hash);
 
@@ -149,27 +184,37 @@ const getAllWaves = async () => {
 
   useEffect(() => {
     checkIfWalletIsConnected();
-  }, [])
-  
+  }, []);
+
   return (
     <div className="mainContainer">
       <div className="dataContainer">
         <div className="header">
-        👋 Hey there!
+        Give Marie a 👋 and get 1 MARI
         </div>
+        <div className="bio">
+        Remaining MARI for Claim: {remainingTokens}
+        </div>
+        
+        <div className="bio">
+        MARI token contract: {tokenContractAddress}
+        </div>
+
 
         <ConnectWalletButton currentAccount = {currentAccount} connectWallet = {connectWallet}/>
 
         <MessageBar handleChange = {handleChange}/>
 
         <button className="waveButton" onClick={wave}>
-          Trigger The Wave
+          Wave to Marie
         </button>
 
         <div className="bio">
           Number Of Waves: {currentWaveCount}
         </div>
-
+        <div className="bio">
+          Your MARI balance: {balance}
+        </div>
         <div>
           {allWaves.map((wave, index) => {
           return (
@@ -181,7 +226,7 @@ const getAllWaves = async () => {
             );
         })}
         </div>
-        
+
       </div>
     </div>
   );
