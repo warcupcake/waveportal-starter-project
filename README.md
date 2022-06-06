@@ -12,4 +12,7 @@ The application allows you to:
 MARI Token: The MARI token has a limited supply of 100 tokens, with 1 given out at every call of wave function.
 
 Token Address: 0x7D8f9a89e8fB4bE4e28e692c1725e046D852675F
+
 Wave Contract Address: 0x8c169E24aC22dCe86492A432Da4f6A16d36C3278
+
+To view the smart contract .sol files: https://github.com/warcupcake/waveportal-starter-project/tree/main/contracts
