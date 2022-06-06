@@ -30,7 +30,7 @@
   padding: 8px;
   border: 0;
   border-radius: 5px;
-  
+
 }
 
 .connectButton {
@@ -39,7 +39,7 @@
   padding: 8px;
   border: 0;
   border-radius: 5px;
-  
+
 }
 
 .messageBar input {
@@ -50,5 +50,9 @@
   border-radius: 4px;
   font-size: .77rem;
   font-weight: 500;
-  
+
+}
+
+.pic {
+  height: 5vmin;
 }

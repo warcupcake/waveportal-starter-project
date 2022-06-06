@@ -4,6 +4,8 @@ import './App.css';
 import abi from './utils/WavePortal.json';
 import tokenAbi from './utils/MARI.json';
 
+import marie from './assets/marie.png'
+
 import MessageBar from "./MessageBar";
 import ConnectWalletButton from "./ConnectWalletButton";
 
@@ -189,17 +191,19 @@ const getAllWaves = async () => {
   return (
     <div className="mainContainer">
       <div className="dataContainer">
+        <div style={{ backgroundColor: "Pink", marginTop: "16px", marginBottom: "16px", padding: "10px", "text-align": "center", }}>
+        PLEASE ONLY INTERACT WITH RINKEBY TESTNET
+        </div>
         <div className="header">
         Give Marie a 👋 and get 1 MARI
         </div>
         <div className="bio">
         Remaining MARI for Claim: {remainingTokens}
         </div>
-        
+
         <div className="bio">
         MARI token contract: {tokenContractAddress}
         </div>
-
 
         <ConnectWalletButton currentAccount = {currentAccount} connectWallet = {connectWallet}/>
 
@@ -213,7 +217,7 @@ const getAllWaves = async () => {
           Number Of Waves: {currentWaveCount}
         </div>
         <div className="bio">
-          Your MARI balance: {balance}
+          Your MARI balance : {balance} <img className="pic" src={marie} alt=''/>
         </div>
         <div>
           {allWaves.map((wave, index) => {
